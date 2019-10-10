@@ -8,8 +8,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// CONNECT TO DB
+// CONNECT TO DATABASE
+const db = require('./models/index').sequelize;
 
+db.authenticate()
+  .then(() => {
+    console.log('Connection to database has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 // IMPORT ROUTES
 const apiRoutes = require('./routes/api'); 

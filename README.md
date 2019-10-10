@@ -8,7 +8,8 @@ Make sure you have an existing MySQL database installed
 
 1. git clone
 2. npm install
-3. sequelize-cli
+3. npm run db:migrate to create database
+3. somehow seed table?
 4. run dev?
 
 ```

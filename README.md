@@ -10,3 +10,7 @@ Make sure you have an existing MySQL database installed
 2. npm install
 3. sequelize-cli
 4. run dev?
+
+```
+Since sequelize-cli is not installed globally, commands should be run using `npx sequelize [command]`, assuming npm@5.2.0 and above has been installed globally.
+```

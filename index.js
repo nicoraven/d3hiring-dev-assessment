@@ -14,6 +14,9 @@ app.use(express.urlencoded({extended: true}));
 // IMPORT ROUTES
 const apiRoutes = require('./routes/api'); 
 app.use('/api', apiRoutes);
+app.get('/', (req, res) => res.status(200).send({
+  message: 'Welcome to the student management system.'
+}));
 
 // LISTEN TO SERVER
-server.listen(PORT, () => console.log(`~~~ Listening on port ${PORT}! ~~~`));
+app.listen(PORT, () => console.log(`~~~ Listening on port ${PORT}! ~~~`));

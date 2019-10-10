@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     suspended: {
       allowNull: false,
       type: DataTypes.BOOLEAN,
-      defaultValue: '0',
+      defaultValue: false
     }
   }, {});
   Student.associate = function(models) {

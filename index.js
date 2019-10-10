@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended: true}));
 const apiRoutes = require('./routes/api'); 
 app.use('/api', apiRoutes);
 app.get('/', (req, res) => res.status(200).send({
-  message: 'Welcome to the student management system.'
+  message: 'Welcome to the student administration system.'
 }));
 
 // LISTEN TO SERVER

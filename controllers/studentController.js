@@ -1,11 +1,5 @@
 const Student = require('../models').Student;
 
-const landingMessage = (req, res) => {
-  res.status(200).send({
-    message: 'You have reached the SAS api.'
-  })
-};
-
 const registerStudent = (req, res) => {
   console.log(req.body);
   let data = [];
@@ -20,6 +14,5 @@ const registerStudent = (req, res) => {
 };
 
 module.exports = {
-  landingMessage,
   registerStudent
 }

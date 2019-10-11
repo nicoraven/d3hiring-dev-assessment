@@ -15,3 +15,7 @@ Make sure you have an existing MySQL database installed
 ```
 Since sequelize-cli is not installed globally, commands should be run using `npx sequelize [command]`, assuming npm@5.2.0 and above has been installed globally.
 ```
+
+### Issues
+
+* Validation not working

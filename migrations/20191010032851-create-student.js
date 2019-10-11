@@ -11,10 +11,8 @@ module.exports = {
       email: {
         allowNull: false,
         type: Sequelize.STRING,
-        unique: true,
-        validate: {
-          isEmail: true
-        }
+        validate: { isEmail: true },
+        unique: true
       },
       suspended: {
         allowNull: false,

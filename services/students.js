@@ -1,5 +1,5 @@
 const models = require('../models');
-// const Student = models.Student;
+const Student = models.Student;
 // const Teacher = models.Teacher;
 // const TeachersStudents = models.TeachersStudents;
 const sequelize = require('../models').sequelize;
@@ -50,6 +50,26 @@ const commonStudents = async (teachers, callback) => {
   callback(data);
 }
 
+const suspendStudent = async (email, callback) => {
+  Student.update(
+    {suspended: true},
+    {where: {email: email}}
+  )
+  .then(([result]) => {
+    if(result === 1){
+      callback(1);
+    }
+    else{
+      callback(0);
+    }
+  })
+  .catch(error => {
+    console.log(error);
+    callback(error);
+  })
+}
+
 module.exports = {
-  commonStudents
+  commonStudents,
+  suspendStudent
 }

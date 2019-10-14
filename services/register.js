@@ -1,5 +1,10 @@
-const Student = require('../models').Student;
-const Teacher = require('../models').Teacher;
+const models = require('../models');
+const Student = models.Student;
+const Teacher = models.Teacher;
+const TeachersStudents = models.TeachersStudents;
+
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 async function register(form, callback){
 
@@ -15,48 +20,59 @@ async function register(form, callback){
       await getStudent(email, data);
     };
     await getTeacher(form.teacher, data);
+    if(data.error.length === 0){
+      for(let student of data.students) {
+        await registerConnection(data.teacher, student);
+      }
+    }
   } catch(err){
     console.log(err);
   } finally {
-    // res.status(201).send(data)
     callback(data);
   }
 }
 
+async function registerConnection(teacher, student) {
+  TeachersStudents.findOrCreate({
+    where: { [Op.and]: [{teacherId: teacher}, {studentId: student}] },
+    defaults: {teacherId: teacher, studentId: student}
+  })
+  .then(result => {
+    console.log("connection created")
+  })
+  .catch(err => {
+    console.log('ERROR', err)
+    data.error.push("error creating connection")
+  })
+}
+
 async function getTeacher(email, data) {
-  try {
-    data.teacher = await findId('teacher', email);
-  } catch(err) {
-    console.log(err)
-    data.invalidEmail.push(email);
-  }
+  await Teacher.findOrCreate({
+    where: {email: email},
+    defaults: { email: email}
+  })
+  .then(([user, created]) => {
+    // console.log("found", user)
+    data.teacher = user.id;
+  })
+  .catch(err => {
+    console.log('ERROR', err)
+    data.invalidEmail.push(email)
+  })
 }
 
 async function getStudent(email, data) {
-  try {
-    let studentId = await findId('student', email);
-    data.students.push(studentId);
-  } catch(err) {
-    console.log(err)
-    data.invalidEmail.push(email);
-  }
-}
-
-function findId(type, email) {
-  let model = type === 'teacher' ? Teacher : Student;
-  return new Promise((resolve, reject) => {
-    model.findOrCreate({
-      where: {email: email},
-      defaults: { email: email}
-    })
-    .then(([user, created]) => {
-      // console.log("found", user)
-      return resolve(user.id)
-    })
-    .catch(err => {
-      console.log('ERROR', err)
-      return reject(err);
-    })
+  await Student.findOrCreate({
+    where: {email: email},
+    defaults: { email: email}
+  })
+  .then(([user, created]) => {
+    // console.log("found", user)
+    data.students.push(user.id);
+  })
+  .catch(err => {
+    console.log('ERROR', err)
+    data.invalidEmail.push(email)
   })
 }
 

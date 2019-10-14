@@ -5,6 +5,11 @@ const Student = models.Student;
 const sequelize = require('../models').sequelize;
 
 const queryDb = async email =>{
+  let results = await sequelize.query("select * from students inner join teachersstudents on students.id = teachersstudents.studentId where teachersstudents.teacherId = (select id from teachers where email = $email)", { bind: { email: email }, type: sequelize.QueryTypes.SELECT })
+  return results;
+}
+
+const queryUnsuspendedStudents = async email =>{
   let results = await sequelize.query("select email from students inner join teachersstudents on students.id = teachersstudents.studentId where teachersstudents.teacherId = (select id from teachers where email = $email)", { bind: { email: email }, type: sequelize.QueryTypes.SELECT })
   let emails = results.map(students => students.email)
   return emails;
@@ -38,10 +43,14 @@ const commonStudents = async (teachers, callback) => {
   for(let email of teachers) {
     try {
       let students = await queryDb(email, data);
-      data.students.push(...students);
+      let nstudents = students.map(element => {
+        return element.email
+      });
+      console.log(students)
+      data.students.push(...nstudents);
     }
     catch {
-      console.log(error)
+      console.log("error");
     }
   };
 

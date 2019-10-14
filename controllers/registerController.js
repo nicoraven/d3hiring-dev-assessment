@@ -5,7 +5,7 @@ const registerAll = (req, res) => {
 
   services.register(req.body, data => {
     if(data.error.length > 0 || data.invalidEmail.length > 0){
-      res.sendStatus(400).send(data);
+      res.status(400).send(data);
     } else {
       res.sendStatus(204)
     }

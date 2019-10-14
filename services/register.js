@@ -51,9 +51,9 @@ async function getTeacher(email, data) {
     where: {email: email},
     defaults: { email: email}
   })
-  .then(([user, created]) => {
-    // console.log("found", user)
-    data.teacher = user.id;
+  .then(([teacher, created]) => {
+    // console.log("found", teacher)
+    data.teacher = teacher.id;
   })
   .catch(err => {
     console.log('ERROR', err)
@@ -66,9 +66,9 @@ async function getStudent(email, data) {
     where: {email: email},
     defaults: { email: email}
   })
-  .then(([user, created]) => {
-    // console.log("found", user)
-    data.students.push(user.id);
+  .then(([student, created]) => {
+    // console.log("found", student)
+    data.students.push(student.id);
   })
   .catch(err => {
     console.log('ERROR', err)

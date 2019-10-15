@@ -3,5 +3,5 @@ const students = require('./students');
 
 module.exports = {
   register,
-  students
-}
+  students,
+};

@@ -1,18 +1,10 @@
 const models = require('../models');
 const Student = models.Student;
-// const Teacher = models.Teacher;
-// const TeachersStudents = models.TeachersStudents;
 const sequelize = require('../models').sequelize;
 
 const queryDb = async email =>{
   let results = await sequelize.query("select * from students inner join teachersstudents on students.id = teachersstudents.studentId where teachersstudents.teacherId = (select id from teachers where email = $email)", { bind: { email: email }, type: sequelize.QueryTypes.SELECT })
   return results;
-}
-
-const queryUnsuspendedStudents = async email =>{
-  let results = await sequelize.query("select email from students inner join teachersstudents on students.id = teachersstudents.studentId where teachersstudents.teacherId = (select id from teachers where email = $email)", { bind: { email: email }, type: sequelize.QueryTypes.SELECT })
-  let emails = results.map(students => students.email)
-  return emails;
 }
 
 const count = names => 
@@ -43,9 +35,7 @@ const commonStudents = async (teachers, callback) => {
   for(let email of teachers) {
     try {
       let students = await queryDb(email, data);
-      let nstudents = students.map(element => {
-        return element.email
-      });
+      let nstudents = students.map(element => element.email);
       console.log(students)
       data.students.push(...nstudents);
     }
@@ -78,7 +68,59 @@ const suspendStudent = async (email, callback) => {
   })
 }
 
+const checkTaggedSuspended = async email => {
+  let student = await Student.findOne({
+    where: {
+      email: email,
+      suspended: false
+    }
+  })
+  .then(student => {
+    if(student){
+      console.log("student", student.get({
+        plain: true
+      }));
+      return student.get({
+        plain: true
+      }).email
+    } else {
+      return null;
+    }
+  })
+  .catch(error => {
+    console.log(error);
+    return null;
+  });
+  return student;
+}
+
+const notifications = async (body, callback) => {
+  let data = {
+    "recipients":
+      []   
+  };
+
+  let students = await queryDb(body.teacher, data);
+  let filteredStudents = students.filter(student => student.suspended === 0);
+  filteredStudents = filteredStudents.map(student => student.email);
+  data.recipients.push(...filteredStudents);
+  
+  let tagged = body.notification.split(' ');
+  tagged = tagged.filter(word => word.charAt(0) === '@');
+  tagged = tagged.map(email => email.substring(1));
+  let promises = tagged.map(async email => {
+    let notSuspended = await checkTaggedSuspended(email);
+    return notSuspended;
+  });
+  let notSuspendedTagged = await Promise.all(promises);
+  notSuspendedTagged = notSuspendedTagged.filter(email => email !== null);
+  data.recipients.push(...notSuspendedTagged);
+
+  callback(data)
+}
+
 module.exports = {
   commonStudents,
-  suspendStudent
+  suspendStudent,
+  notifications
 }

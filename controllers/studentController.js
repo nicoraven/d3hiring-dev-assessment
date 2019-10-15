@@ -17,12 +17,21 @@ const suspendStudent = (req, res) => {
     } else if (data === 0) {
       res.status(404).send("email does not exist");
     } else {
-      res.send(400).send(data);
+      res.status(400).send(data);
     }
+  })
+}
+
+const notifications = (req, res) => {
+  console.log(req.body);
+
+  services.students.notifications(req.body, data => {
+    res.status(200).send(data)
   })
 }
 
 module.exports = {
   commonStudents,
-  suspendStudent
+  suspendStudent,
+  notifications
 }

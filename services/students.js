@@ -35,8 +35,7 @@ const commonStudents = async (teachers, callback) => {
   for(let email of teachers) {
     try {
       let students = await queryDb(email, data);
-      let nstudents = students.filter(student => student.suspended === 0);
-      nstudents = nstudents.map(element => element.email );
+      let nstudents = students.map(element => element.email);
       data.students.push(...nstudents);
     }
     catch {

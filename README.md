@@ -1,21 +1,19 @@
 # Student Management Portal
 
-(description)
+Teachers need a system where they can perform administrative functions for their students. Teachers and students are identified by their email addresses.
 
 ## Local Installation
 
-Make sure you have an existing MySQL database installed
+##### Make sure you have MySQL already installed
 
-1. git clone
-2. npm install
-3. npm run db:migrate to create database
-3. somehow seed table?
-4. run dev?
+1. `git clone https://github.com/nicoraven/d3hiring-dev-assessment.git`
+2. `cd` into the directory and run `npm install`
+3. run `npm run db:migrate` to create database and tables
+3. run  `npm run dev` to start locally in development mode
 
-```
-Since sequelize-cli is not installed globally, commands should be run using `npx sequelize [command]`, assuming npm@5.2.0 and above has been installed globally.
-```
+### Pending
 
-### Issues
-
-* Validation not working
+* Error handling
+* Unit testing
+* Deploying to hosted server
+* Refactoring code structure/design for modularity

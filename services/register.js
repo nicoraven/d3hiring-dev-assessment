@@ -22,17 +22,26 @@ async function register(form, callback){
     await getTeacher(form.teacher, data);
     if(data.error.length === 0){
       for(let student of data.students) {
-        await registerConnection(data.teacher, student);
+        await registerConnection(data.teacher, student, data);
       }
     }
   } catch(err){
     console.log(err);
   } finally {
-    callback(data);
+    // callback(data);
+    if(data.invalidEmail.length > 0){
+      callback({message: `These emails are invalid: ${data.invalidEmail.join(", ")}`})
+    }
+    else if(data.error.length > 0){
+      callback({message: data.error.join(", ")})
+    }
+    else {
+      callback("ok");
+    }
   }
 }
 
-async function registerConnection(teacher, student) {
+async function registerConnection(teacher, student, data) {
   TeachersStudents.findOrCreate({
     where: { [Op.and]: [{teacherId: teacher}, {studentId: student}] },
     defaults: {teacherId: teacher, studentId: student}

@@ -4,10 +4,10 @@ const registerAll = (req, res) => {
   console.log(req.body);
 
   services.register(req.body, data => {
-    if(data.error.length > 0 || data.invalidEmail.length > 0){
-      res.status(400).send(data);
-    } else {
+    if(typeof data === 'string'){
       res.sendStatus(204)
+    } else {
+      res.status(400).send(data);
     }
   })
 };

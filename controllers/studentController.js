@@ -19,7 +19,7 @@ const suspendStudent = (req, res) => {
     if (data === 1) {
       res.sendStatus(204);
     } else if (data === 0) {
-      res.status(404).send('email does not exist');
+      res.status(404).send({ message: 'email does not exist' });
     } else {
       res.status(400).send({ message: data });
     }
@@ -30,7 +30,13 @@ const notifications = (req, res) => {
   console.log(req.body);
 
   services.students.notifications(req.body, (data) => {
-    res.status(200).send(data);
+    if (data === 0) {
+      res.status(404).send({ message: 'email does not exist' });
+    } else if (data === 2) {
+      res.status(500).send({ message: 'Internal Server Error' });
+    } else {
+      res.status(200).send(data);
+    }
   });
 };
 

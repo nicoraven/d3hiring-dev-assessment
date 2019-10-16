@@ -147,5 +147,6 @@ module.exports = {
   commonStudents,
   suspendStudent,
   notifications,
-  count
+  count,
+  duplicates,
 }

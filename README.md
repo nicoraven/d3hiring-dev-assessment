@@ -4,7 +4,7 @@ Teachers need a system where they can perform administrative functions for their
 
 ## Hosted API
 
-A hosted copy of the API can be found at: [18.139.84.153:3000/api/](18.139.84.153:3000/api/)
+A hosted copy of the API can be found at: [18.139.84.153:3000/api/](http://18.139.84.153:3000/api/)
 
 ## Local Installation
 

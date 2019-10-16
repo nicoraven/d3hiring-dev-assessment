@@ -146,5 +146,6 @@ const notifications = async (body, callback) => {
 module.exports = {
   commonStudents,
   suspendStudent,
-  notifications
+  notifications,
+  count
 }

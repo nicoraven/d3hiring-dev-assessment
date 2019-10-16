@@ -16,5 +16,4 @@ Teachers need a system where they can perform administrative functions for their
 
 * Error handling
 * Unit testing
-* Deploying to hosted server
 * Refactoring code structure/design for modularity

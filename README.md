@@ -34,7 +34,13 @@ npm run db:migrate
 npm run dev
 ```
 
+## Unit Testing
+
+A short test was created using Jest. To run the test:
+```
+npm test
+```
+
 ## Pending
 
-* Unit testing
 * Refactoring code structure/design for modularity
